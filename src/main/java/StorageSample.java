@@ -273,7 +273,8 @@ public static byte[] extractBytes (String ImageName) throws IOException {
 
   	    // Make an image directly from a byte array, and transform it.
   	    Image image = ImagesServiceFactory.makeImage(imageBytes);
-  	    Transform resize = ImagesServiceFactory.makeResize(125, 75);
+  	    Transform resize = ImagesServiceFactory.makeResize(100, 50);
+  	  System.out.println("$$$$$$$$$$$$$$$$$$$$");
   	    Image resizedImage = imagesService.applyTransform(resize, image);
   	    System.out.println("----------------------------");
   	    System.out.println(resizedImage);
