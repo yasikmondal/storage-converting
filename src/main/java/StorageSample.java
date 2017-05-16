@@ -207,11 +207,13 @@ public class StorageSample {
       }
       for (StorageObject object : bucketContents) {
 	      
-	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
-	      
-	      
-	  byte[] imageBytes;
-    	  if("leyKart-images/B1/G1.png".equals(object.getName())){
+	     
+    	  //get image Object
+    	  System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
+    	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
+    	  
+    	  byte[] imageBytes;
+    	  if(object.getName()== "leyKart-images/B1/G1.png"){
     		  System.out.println("***************************");
     	  ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	  ObjectOutput out = null;
@@ -219,7 +221,8 @@ public class StorageSample {
     	    out = new ObjectOutputStream(bos);   
     	    out.writeObject(object);
     	    out.flush();
-    	    imageBytes = bos.toByteArray();
+    	    //imageBytes = bos.toByteArray();
+    	    imageBytes = SerializationUtils.serialize(bos.toByteArray());
     	   
     	  } finally {
     	    try {
@@ -242,16 +245,14 @@ public class StorageSample {
 
   	    // Write the transformed image back to a Cloud Storage object.
   	    gcsService.createOrReplace(
-  	        new GcsFilename(bucketName, "resizedImage_125X75" + object.getName()),
+  	        new GcsFilename(destinationFolder, "resizedImage_125X75" + object.getName()),
   	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
   	        ByteBuffer.wrap(resizedImage.getImageData()));
   	    //[END resize]
     	  
-    	  }
-	      
-        
-	      
-	     /* if(object.getName()== "B1"){
+    	  } 
+    	  
+  	  /* if(object.getName()== "leyKart-images/B1/"){
     		  Blob imageData = (Blob)object.get("G1.png");
     		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
     		  
@@ -265,34 +266,26 @@ public class StorageSample {
     			} catch (URISyntaxException e) {
     				// TODO Auto-generated catch block
     				e.printStackTrace();
-    			}*/
+    			}
     		  
-    		  /*FileInputStream fileInputStream = new FileInputStream(file);
+    		  FileInputStream fileInputStream = new FileInputStream(file);
     		    FileChannel fileChannel = fileInputStream.getChannel();
     		    ByteBuffer byteBuffer = ByteBuffer.allocate((int)fileChannel.size());
     		    fileChannel.read(byteBuffer);
 
     		    byte[] imageBytes = byteBuffer.array();
-    		    System.out.println("Test2");
+    		    System.out.println("Test2");  
     		  
     		  
     	  }*/
-	      
-	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
-	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
-    	  //System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
-	      
+    	  
+      
+    	  
         
         
-        /*FileInputStream fileInputStream = new FileInputStream(file);
-	    FileChannel fileChannel = fileInputStream.getChannel();
-	    ByteBuffer byteBuffer = ByteBuffer.allocate((int)fileChannel.size());
-	    fileChannel.read(byteBuffer);
-
-	    byte[] imageBytes = byteBuffer.array();
-	    System.out.println("Test2");
         
-        //[START resize]
+        
+       /* //[START resize]
 	    // Get an instance of the imagesService we can use to transform images.
 	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
 
@@ -308,7 +301,9 @@ public class StorageSample {
 	        new GcsFilename(destinationFolder, "resizedImage_125X75" + object.getName()),
 	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
 	        ByteBuffer.wrap(resizedImage.getImageData()));
-	    //[END resize] */
+	    //[END resize]
+*/	    
+      
 	    
       }
       /*FOR (i=0; i<=bucketContents.size(); i++){
