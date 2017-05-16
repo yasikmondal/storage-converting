@@ -19,6 +19,9 @@ import com.google.api.services.storage.model.Bucket;
 import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.Objects;
 import com.google.api.services.storage.model.StorageObject;
+import com.google.appengine.api.blobstore.BlobKey;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.blobstore.BlobstoreServicePb.BlobstoreService;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
@@ -266,8 +269,16 @@ public static byte[] extractBytes (String ImageName) throws IOException {
     	      // ignore close exception
     	    }
     	  } */
+		  
+		  // Get an instance of the imagesService we can use to transform images.
+    	  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
+    		  com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    		  BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + bucketName + object.getName());
+    		  Image blobImage = ImagesServiceFactory.makeImageFromBlob(blobKey);
+    		  Transform rotate = ImagesServiceFactory.makeResize(100, 50);
+    		  Image resizedImage = imagesService.applyTransform(rotate, blobImage);
     	  
-    	//[START resize]
+    	/*[START resize]
   	    // Get an instance of the imagesService we can use to transform images.
   	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
 
@@ -277,7 +288,7 @@ public static byte[] extractBytes (String ImageName) throws IOException {
   	  System.out.println("$$$$$$$$$$$$$$$$$$$$");
   	    Image resizedImage = imagesService.applyTransform(resize, image);
   	    System.out.println("----------------------------");
-  	    System.out.println(resizedImage);
+  	    System.out.println(resizedImage); */
 
   	    // Write the transformed image back to a Cloud Storage object.
   	    gcsService.createOrReplace(
