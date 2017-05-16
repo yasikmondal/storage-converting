@@ -215,17 +215,7 @@ public static byte[] extractBytes (String ImageName) throws IOException {
       System.out.println("timeCreated: " + bucket.getTimeCreated());
       System.out.println("owner: " + bucket.getOwner());
       
-      /*File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
-      URL resource = myFile.toURI().toURL();
-      //ServletContext context=getServletContext();
-		//URL resource=context.getResource("/laykart-165108.appspot.com/leyKart-images/B1/");
-		File file = null;
-		try {
-			file = new File(resource.toURI());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} */
+      
 	    
 
 
@@ -236,12 +226,10 @@ public static byte[] extractBytes (String ImageName) throws IOException {
             "There were no objects in the given bucket; try adding some and re-running.");
       }
       for (StorageObject object : bucketContents) {
-	      
-	     
     	  //get image Object
     	  System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
     	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
-	  System.out.println("contain type::::::::::::::" + object.getContentType());
+    	  System.out.println("contain type::::::::::::::" + object.getContentType());
     	  
     	  byte[] imageBytes = null;
     	  if("leyKart-images/B1/G1.png".equals(object.getName())){
@@ -249,118 +237,27 @@ public static byte[] extractBytes (String ImageName) throws IOException {
     		  if ("image/png".equals(object.getContentType())){
     			  
     			  imageBytes = extractBytes( object.getName());
+    			// Get an instance of the imagesService we can use to transform images.
+      	  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
+      		  com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+      		  BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + bucketName + object.getName());
+      		  Image blobImage = ImagesServiceFactory.makeImageFromBlob(blobKey);
+      		System.out.println("$$$$$$$$$$$$$$$$$$$");
+      		  Transform rotate = ImagesServiceFactory.makeResize(100, 50);
+      		  Image resizedImage = imagesService.applyTransform(rotate, blobImage);
+      		  
+      		// Write the transformed image back to a Cloud Storage object.
+        	    gcsService.createOrReplace(
+        	        new GcsFilename(bucketName, "resizedImage_125X75" + object.getName()),
+        	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
+        	        ByteBuffer.wrap(resizedImage.getImageData()));
+    			  
     		  }
-    	  
-		  
-		  
-/*	ByteArrayOutputStream bos = new ByteArrayOutputStream();
-    	  ObjectOutput out = null;
-    	  try {
-    	    out = new ObjectOutputStream(bos);   
-    	    out.writeObject(object);
-    	    out.flush();
-    	    //imageBytes = bos.toByteArray();
-    	    imageBytes = SerializationUtils.serialize(bos.toByteArray());
-    	   
-    	  } finally {
-    	    try {
-    	      bos.close();
-    	    } catch (IOException ex) {
-    	      // ignore close exception
-    	    }
-    	  } */
-		  
-		  // Get an instance of the imagesService we can use to transform images.
-    	  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-    		  com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-    		  BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + bucketName + object.getName());
-    		  Image blobImage = ImagesServiceFactory.makeImageFromBlob(blobKey);
-    		  Transform rotate = ImagesServiceFactory.makeResize(100, 50);
-    		  Image resizedImage = imagesService.applyTransform(rotate, blobImage);
-    	  
-    	/*[START resize]
-  	    // Get an instance of the imagesService we can use to transform images.
-  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-
-  	    // Make an image directly from a byte array, and transform it.
-  	    Image image = ImagesServiceFactory.makeImage(imageBytes);
-  	    Transform resize = ImagesServiceFactory.makeResize(100, 50);
-  	  System.out.println("$$$$$$$$$$$$$$$$$$$$");
-  	    Image resizedImage = imagesService.applyTransform(resize, image);
-  	    System.out.println("----------------------------");
-  	    System.out.println(resizedImage); */
-
-  	    // Write the transformed image back to a Cloud Storage object.
-  	    gcsService.createOrReplace(
-  	        new GcsFilename(bucketName, "resizedImage_125X75" + object.getName()),
-  	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
-  	        ByteBuffer.wrap(resizedImage.getImageData()));
-  	    //[END resize]
+    		 
     	  
     	  } 
-    	  
-  	  /* if(object.getName()== "leyKart-images/B1/"){
-    		  Blob imageData = (Blob)object.get("G1.png");
-    		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
-    		  
-    		  File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
-    	      URL resource = myFile.toURI().toURL();
-    	      //ServletContext context=getServletContext();
-    			//URL resource=context.getResource("/laykart-165108.appspot.com/leyKart-images/B1/");
-    			File file = null;
-    			try {
-    				file = new File(resource.toURI());
-    			} catch (URISyntaxException e) {
-    				// TODO Auto-generated catch block
-    				e.printStackTrace();
-    			}
-    		  
-    		  FileInputStream fileInputStream = new FileInputStream(file);
-    		    FileChannel fileChannel = fileInputStream.getChannel();
-    		    ByteBuffer byteBuffer = ByteBuffer.allocate((int)fileChannel.size());
-    		    fileChannel.read(byteBuffer);
-
-    		    byte[] imageBytes = byteBuffer.array();
-    		    System.out.println("Test2");  
-    		  
-    		  
-    	  }*/
-    	  
+      	}
       
-    	  
-        
-        
-        
-        
-       /* //[START resize]
-	    // Get an instance of the imagesService we can use to transform images.
-	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-
-	    // Make an image directly from a byte array, and transform it.
-	    Image image = ImagesServiceFactory.makeImage(imageBytes);
-	    Transform resize = ImagesServiceFactory.makeResize(125, 75);
-	    Image resizedImage = imagesService.applyTransform(resize, image);
-	    System.out.println("----------------------------");
-	    System.out.println(resizedImage);
-
-	    // Write the transformed image back to a Cloud Storage object.
-	    gcsService.createOrReplace(
-	        new GcsFilename(destinationFolder, "resizedImage_125X75" + object.getName()),
-	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
-	        ByteBuffer.wrap(resizedImage.getImageData()));
-	    //[END resize]
-*/	    
-      
-	    
-      }
-      /*FOR (i=0; i<=bucketContents.size(); i++){
-    	  
-    	  gcsService.createOrReplace(
-      	        new GcsFilename(bucket2, bucketContents[i]),
-      	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
-      	        ByteBuffer.wrap(imageBytes));
-    	  
-      }*/
 
       // Create a temp file to upload
       Path tempPath = Files.createTempFile("StorageSample", "txt");
@@ -372,6 +269,8 @@ public static byte[] extractBytes (String ImageName) throws IOException {
 
       // Now delete the file
       //deleteObject(TEST_FILENAME, bucketName);
+
+    
 
     } catch (IOException e) {
       System.err.println(e.getMessage());
