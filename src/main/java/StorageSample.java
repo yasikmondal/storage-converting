@@ -204,6 +204,12 @@ public class StorageSample {
       }
       for (StorageObject object : bucketContents) {
 	      
+	      
+	      if(object.getName()== "leyKart-images/B1/"){
+    		  Blob imageData = (Blob)object.get("G1.png");
+    		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
+	      }
+	      
         
 	      
 	     /* if(object.getName()== "B1"){
