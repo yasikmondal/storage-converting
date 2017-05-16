@@ -19,6 +19,7 @@ import com.google.api.services.storage.model.Bucket;
 import com.google.api.services.storage.model.ObjectAccessControl;
 import com.google.api.services.storage.model.Objects;
 import com.google.api.services.storage.model.StorageObject;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
@@ -160,8 +161,8 @@ public class StorageSample {
     }
 
     //String bucketName = args[0];
-    String bucketName = "laykart-165108.appspot.com/leyKart-images/B1/";
-    String destinationFolder = "laykart-165108.appspot.com/1xConvert";
+    String bucketName = "laykart-165108.appspot.com";
+    //String destinationFolder = "laykart-165108.appspot.com/1xConvert";
     
  // [START gcs]
 	  
@@ -181,7 +182,7 @@ public class StorageSample {
       System.out.println("timeCreated: " + bucket.getTimeCreated());
       System.out.println("owner: " + bucket.getOwner());
       
-      File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
+      /*File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
       URL resource = myFile.toURI().toURL();
       //ServletContext context=getServletContext();
 		//URL resource=context.getResource("/laykart-165108.appspot.com/leyKart-images/B1/");
@@ -191,7 +192,7 @@ public class StorageSample {
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} */
 	    
 
 
@@ -202,10 +203,41 @@ public class StorageSample {
             "There were no objects in the given bucket; try adding some and re-running.");
       }
       for (StorageObject object : bucketContents) {
-        System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
+	      
+        
+	      
+	      if(object.getName()== "B1"){
+    		  Blob imageData = (Blob)object.get("G1.png");
+    		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
+    		  
+    		  /*File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
+    	      URL resource = myFile.toURI().toURL();
+    	      //ServletContext context=getServletContext();
+    			//URL resource=context.getResource("/laykart-165108.appspot.com/leyKart-images/B1/");
+    			File file = null;
+    			try {
+    				file = new File(resource.toURI());
+    			} catch (URISyntaxException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}*/
+    		  
+    		  /*FileInputStream fileInputStream = new FileInputStream(file);
+    		    FileChannel fileChannel = fileInputStream.getChannel();
+    		    ByteBuffer byteBuffer = ByteBuffer.allocate((int)fileChannel.size());
+    		    fileChannel.read(byteBuffer);
+
+    		    byte[] imageBytes = byteBuffer.array();
+    		    System.out.println("Test2");*/
+    		  
+    		  
+    	  }
+	      
+	      System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
+	      
         
         
-        FileInputStream fileInputStream = new FileInputStream(file);
+        /*FileInputStream fileInputStream = new FileInputStream(file);
 	    FileChannel fileChannel = fileInputStream.getChannel();
 	    ByteBuffer byteBuffer = ByteBuffer.allocate((int)fileChannel.size());
 	    fileChannel.read(byteBuffer);
@@ -229,7 +261,7 @@ public class StorageSample {
 	        new GcsFilename(destinationFolder, "resizedImage_125X75" + object.getName()),
 	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
 	        ByteBuffer.wrap(resizedImage.getImageData()));
-	    //[END resize]
+	    //[END resize] */
 	    
       }
       /*FOR (i=0; i<=bucketContents.size(); i++){
