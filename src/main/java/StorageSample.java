@@ -56,7 +56,7 @@ import org.apache.commons.lang.SerializationUtils;
  * Demonstrates how to make an authenticated API call using the Google Cloud Storage API client
  * library for java, with Application Default Credentials.
  */
-public class StorageSample implements Serializable {
+public class StorageSample {
 
   /** Global instance of the JSON factory. */
   private static final String TEST_FILENAME = "json-test.txt";
