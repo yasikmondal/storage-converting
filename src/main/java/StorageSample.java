@@ -206,11 +206,11 @@ public class StorageSample {
 	      
         
 	      
-	      if(object.getName()== "B1"){
+	     /* if(object.getName()== "B1"){
     		  Blob imageData = (Blob)object.get("G1.png");
     		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
     		  
-    		  /*File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
+    		  File myFile=new File("/laykart-165108.appspot.com/leyKart-images/B1/");
     	      URL resource = myFile.toURI().toURL();
     	      //ServletContext context=getServletContext();
     			//URL resource=context.getResource("/laykart-165108.appspot.com/leyKart-images/B1/");
@@ -228,12 +228,14 @@ public class StorageSample {
     		    fileChannel.read(byteBuffer);
 
     		    byte[] imageBytes = byteBuffer.array();
-    		    System.out.println("Test2");*/
+    		    System.out.println("Test2");
     		  
     		  
-    	  }
+    	  }*/
 	      
-	      System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
+	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
+	      System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
+    	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
 	      
         
         
