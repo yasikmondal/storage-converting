@@ -214,7 +214,7 @@ public class StorageSample {
     	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
     	  
     	  byte[] imageBytes;
-    	  if(object.getName()== "leyKart-images/B1/G1.png"){
+    	  if("leyKart-images/B1/G1.png".equals(object.getName())){
     		  System.out.println("***************************");
     	  ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	  ObjectOutput out = null;
