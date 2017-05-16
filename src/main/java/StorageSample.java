@@ -212,6 +212,7 @@ public class StorageSample implements Serializable {
     	  //get image Object
     	  System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
     	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
+	  System.out.println("contain type::::::::::::::" + object.getContentType());
     	  
     	  byte[] imageBytes;
     	  if("leyKart-images/B1/G1.png".equals(object.getName())){
