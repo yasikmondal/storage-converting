@@ -48,6 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import org.apache.commons.lang.SerializationUtils;
 
 /**
  * Main class for the Cloud Storage JSON API sample.
