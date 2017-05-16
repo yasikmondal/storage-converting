@@ -161,9 +161,15 @@ public class StorageSample {
 	
 public static byte[] extractBytes (String ImageName) throws IOException {
 	  // open image
-	  File imgPath = new File("https://storage.googleapis.com/laykart-165108.appspot.com/" + ImageName);
-		 System.out.println("Image Path::::::: " + imgPath);
-	  BufferedImage bufferedImage = ImageIO.read(imgPath);
+	
+	// open image
+	  String imgPath = "https://storage.googleapis.com/laykart-165108.appspot.com/" + ImageName;
+	 System.out.println("Image Path::::::: " + imgPath);
+	  //File imgPath = new File("https://storage.googleapis.com/laykart-165108.appspot.com/" + ImageName);
+	  URL url=new URL(imgPath);
+	  //Image image = ImageIO.read(url);
+		
+	  BufferedImage bufferedImage = ImageIO.read(url);
 
 	  // get DataBufferBytes from Raster
 	  WritableRaster raster = bufferedImage .getRaster();
