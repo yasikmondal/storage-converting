@@ -32,6 +32,10 @@ import com.google.appengine.tools.cloudstorage.GcsFilename;
 import com.google.appengine.tools.cloudstorage.GcsService;
 import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
 import com.google.appengine.tools.cloudstorage.RetryParams;
+import com.google.apphosting.api.ApiProxy; 
+import com.google.apphosting.api.ApiProxy.ApiProxyException; 
+import com.google.apphosting.api.ApiProxy.Delegate; 
+import com.google.apphosting.api.ApiProxy.LogRecord;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
