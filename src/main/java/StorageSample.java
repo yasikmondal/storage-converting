@@ -204,11 +204,47 @@ public class StorageSample {
       }
       for (StorageObject object : bucketContents) {
 	      
+	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
 	      
-	      if(object.getName()== "leyKart-images/B1/"){
-    		  Blob imageData = (Blob)object.get("G1.png");
-    		  System.out.println("IIIIIIIIIIIIIIImage Object"+imageData.getBytes().length);
-	      }
+	      
+	  byte[] imageBytes;
+    	  if(object.getName()== "leyKart-images/B1/G1.png"){
+    		  System.out.println("***************************");
+    	  ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	  ObjectOutput out = null;
+    	  try {
+    	    out = new ObjectOutputStream(bos);   
+    	    out.writeObject(object);
+    	    out.flush();
+    	    imageBytes = bos.toByteArray();
+    	   
+    	  } finally {
+    	    try {
+    	      bos.close();
+    	    } catch (IOException ex) {
+    	      // ignore close exception
+    	    }
+    	  }
+    	  
+    	//[START resize]
+  	    // Get an instance of the imagesService we can use to transform images.
+  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
+
+  	    // Make an image directly from a byte array, and transform it.
+  	    Image image = ImagesServiceFactory.makeImage(imageBytes);
+  	    Transform resize = ImagesServiceFactory.makeResize(125, 75);
+  	    Image resizedImage = imagesService.applyTransform(resize, image);
+  	    System.out.println("----------------------------");
+  	    System.out.println(resizedImage);
+
+  	    // Write the transformed image back to a Cloud Storage object.
+  	    gcsService.createOrReplace(
+  	        new GcsFilename(destinationFolder, "resizedImage_125X75" + object.getName()),
+  	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
+  	        ByteBuffer.wrap(resizedImage.getImageData()));
+  	    //[END resize]
+    	  
+    	  }
 	      
         
 	      
@@ -240,8 +276,8 @@ public class StorageSample {
     	  }*/
 	      
 	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)");
-	      System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
-    	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
+	      //System.out.println(object.getName() + " (" + object.getSize() + " bytes)"+"-- Kind"+object.getKind());
+    	  //System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
 	      
         
         
