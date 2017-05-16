@@ -161,7 +161,7 @@ public class StorageSample {
 	
 public static byte[] extractBytes (String ImageName) throws IOException {
 	  // open image
-	  File imgPath = new File(ImageName);
+	  File imgPath = new File("https://storage.googleapis.com/laykart-165108.appspot.com/" + ImageName);
 	  BufferedImage bufferedImage = ImageIO.read(imgPath);
 
 	  // get DataBufferBytes from Raster
