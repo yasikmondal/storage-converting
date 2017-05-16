@@ -30,12 +30,16 @@ import com.google.appengine.tools.cloudstorage.GcsService;
 import com.google.appengine.tools.cloudstorage.GcsServiceFactory;
 import com.google.appengine.tools.cloudstorage.RetryParams;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -47,7 +51,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+
 import org.apache.commons.lang.SerializationUtils;
 
 /**
@@ -152,6 +158,19 @@ public class StorageSample {
     client.objects().delete(bucketName, path).execute();
   }
   // [END delete_object]
+	
+public static byte[] extractBytes (String ImageName) throws IOException {
+	  // open image
+	  File imgPath = new File(ImageName);
+	  BufferedImage bufferedImage = ImageIO.read(imgPath);
+
+	  // get DataBufferBytes from Raster
+	  WritableRaster raster = bufferedImage .getRaster();
+	  DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+
+	  return ( data.getData() );
+	 }	
+	
 
   /**
    * Exercises the class's functions - gets and lists a bucket, uploads and deletes an object.
@@ -214,10 +233,17 @@ public class StorageSample {
     	  System.out.println("iMAGE dATA:::::::"+object.get(object.getName()));
 	  System.out.println("contain type::::::::::::::" + object.getContentType());
     	  
-    	  byte[] imageBytes;
+    	  byte[] imageBytes = null;
     	  if("leyKart-images/B1/G1.png".equals(object.getName())){
     		  System.out.println("***************************");
-    	  ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    		  if ("image/png".equals(object.getContentType())){
+    			  
+    			  imageBytes = extractBytes( object.getName());
+    		  }
+    	  
+		  
+		  
+/*	ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	  ObjectOutput out = null;
     	  try {
     	    out = new ObjectOutputStream(bos);   
@@ -232,7 +258,7 @@ public class StorageSample {
     	    } catch (IOException ex) {
     	      // ignore close exception
     	    }
-    	  }
+    	  } */
     	  
     	//[START resize]
   	    // Get an instance of the imagesService we can use to transform images.
