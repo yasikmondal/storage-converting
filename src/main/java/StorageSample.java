@@ -241,6 +241,7 @@ public static byte[] extractBytes (String ImageName) throws IOException {
     		  if ("image/png".equals(object.getContentType())){
     			  
     			  imageBytes = extractBytes( object.getName());
+			  System.out.println(imageBytes);
     			// Get an instance of the imagesService we can use to transform images.
       	  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
       		  
