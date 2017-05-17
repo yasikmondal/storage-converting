@@ -259,7 +259,7 @@ public static byte[] extractBytes (String ImageName) throws IOException {
       		  
       		// Write the transformed image back to a Cloud Storage object.
         	    gcsService.createOrReplace(
-        	        new GcsFilename(bucketName, "resizedImage_125X75" + object.getName()),
+        	        new GcsFilename(bucketName, "resizedImage_125X75" + object.getName() + ".jpeg"),
         	        new GcsFileOptions.Builder().mimeType("image/jpeg").build(),
         	        ByteBuffer.wrap(resizedImage.getImageData()));
     			  
