@@ -247,6 +247,7 @@ public static byte[] extractBytes (String ImageName) throws IOException {
 		Image image = ImagesServiceFactory.makeImage(imageBytes);
       		    Transform resize = ImagesServiceFactory.makeResize(100, 50);
       		  System.out.println("$$$$$$$$$$$$$$$$$$$");
+			  System.out.println(image);
       		    Image resizedImage = imagesService.applyTransform(resize, image);
 			  
 			 /* com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
