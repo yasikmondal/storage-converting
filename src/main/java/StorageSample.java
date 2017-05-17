@@ -243,12 +243,18 @@ public static byte[] extractBytes (String ImageName) throws IOException {
     			  imageBytes = extractBytes( object.getName());
     			// Get an instance of the imagesService we can use to transform images.
       	  	    ImagesService imagesService = ImagesServiceFactory.getImagesService();
-      		  com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+      		  
+		Image image = ImagesServiceFactory.makeImage(imageBytes);
+      		    Transform resize = ImagesServiceFactory.makeResize(100, 50);
+      		  System.out.println("$$$$$$$$$$$$$$$$$$$");
+      		    Image resizedImage = imagesService.applyTransform(resize, image);
+			  
+			 /* com.google.appengine.api.blobstore.BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
       		  BlobKey blobKey = blobstoreService.createGsBlobKey("/gs/" + bucketName + object.getName());
       		  Image blobImage = ImagesServiceFactory.makeImageFromBlob(blobKey);
       		System.out.println("$$$$$$$$$$$$$$$$$$$");
       		  Transform rotate = ImagesServiceFactory.makeResize(100, 50);
-      		  Image resizedImage = imagesService.applyTransform(rotate, blobImage);
+      		  Image resizedImage = imagesService.applyTransform(rotate, blobImage); */
       		  
       		// Write the transformed image back to a Cloud Storage object.
         	    gcsService.createOrReplace(
